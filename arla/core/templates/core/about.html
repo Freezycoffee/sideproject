@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<div class="sm:w-3/4 w-full mx-auto my-7 px-6 py-12 bg-gray-100 rounded-xl">
+    <h1 class="text-3xl font-semibold text-center mb-3">About Us</h1>
+    <p class="sm:text-lg text-xs px-6 py-4 text-gray-500 mb-4">ARLA Racing Exhaust is a company that specializes in the production of high-quality exhaust systems for motorcycles. We have been in the business for over 20 years and have built a reputation for providing top-notch products and excellent customer service. Our exhaust systems are designed to improve the performance and sound of your motorcycle while also enhancing its appearance. We take pride in our work and are committed to delivering the best products to our customers. If you have any questions or would like to learn more about our products, please feel free to contact us.</p>
+    <div class="w-full flex items-center mb-5">
+        <a href="{% url 'core:contact' %}" class="mx-auto font-semibold py-4 px-3 rounded-lg border border-black shadow-[5px_5px_0px_0px_rgba(0,0,0)] hover:bg-blue-700 hover:text-white hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)]">Contact Us</a>
+    </div>
+    <div class="w-full flex items-center justify-center">
+        <span class="text-gray-500 text-semibold">Follow Us on Socials</span>
+    </div>
+    <div class="w-full flex items-center justify-center mt-3">
+        <a href="https://web.facebook.com/p/ARLA-recing-exhaust-indonesia-100090862470244/?_rdc=1&_rdr#" target="_blank" class="mx-2 text-2xl text-blue-700 hover:text-blue-900"><i class="fa-brands fa-facebook fa-lg"></i></a>
+        <a href="https://www.instagram.com/bayuarlaexhaust" target="_blank" class="mx-2 text-2xl text-red-500 hover:text-red-700"><i class="fa-brands fa-instagram fa-lg"></i></a>
+        <a href="https://www.tiktok.com/@arlaracingexhaustidn" target="_blank" class="mx-2 text-2xl text-blue-400 hover:text-blue-600"><i class="fa-brands fa-tiktok fa-lg"></i></a>
+    </div>
+
+</div>
+{% endblock %}

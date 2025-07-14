@@ -1,0 +1,212 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<div class="sm:w-3/4 w-full mx-auto my-7 px-6 pb-12 pt-2 bg-gray-100 rounded-xl">
+    <h1 class="text-3xl font-semibold text-center mt-2 mb-3">Cart</h1>
+    {% if products|length == 0 %}
+        <h2 class="sm:text-2xl text-md text-center p-12">Oops! Your cart is still empty <i class="fa-solid fa-wind"></i></h2>
+    {% else %}
+    {% for product in products %}
+    <div class="sm:w-4/5 w-full h-3/4 mx-auto mb-5 shadow-[5px_5px_0px_0px_rgba(0,0,0)] rounded-xl">
+        <span class="grid grid-cols-6">
+            <div class="col-span-2">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full rounded-l-xl">
+            </div>
+            <div class="col-span-3 py-1 px-3 rounded-r-xl bg-white">
+                <h3 class="sm:text-xl text-md">{{ product.name }}</h3>
+                <p class="sm:text-lg text-xs sm:mb-3 mb-2" id="price"><strong>${{ product.price }}</strong></p>
+                {% for key, value in quantity.items %}
+                    {% if key == product.id|slugify %}
+                    <!-- <div class="grid grid-cols-2 mt-2 w-full" id="qty-{{product.id}}"> -->
+                          
+                            <div class="sm:w-1/4 w-1/2 grid grid-cols-3 ">
+
+                              <button type="button" class="bg-gray-100 border border-gray-300 text-gray-900 rounded-md transition hover:bg-gray-200" id="decrement-button" data-index="{{product.id}}">
+                                &minus;
+                              </button>
+
+                          
+                              <input
+                                type="number"
+                                id="Quantity"
+                                value="{{ value }}"
+                                class="col-span-1 h-6 font-bold rounded-sm border-gray-200 text-center [-moz-appearance:_textfield] sm:text-md text-xs [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                              />
+
+                                <button type="button" class="bg-gray-100 border border-gray-300 text-gray-900 rounded-md transition hover:bg-gray-200" id="increment-button" data-index="{{product.id}}">
+                                    &plus;
+                                </button>
+
+                            </div>
+
+                        <!-- <button class='px-3 py-3 w-1/4 text-sm border border-gray-300 bg-gray-100 rounded-xl hover:bg-gray-200', data-index='{{product.id}}' id="update-cart"><i class="fa-solid fa-check fa-md"></i></button> -->
+                    <!-- </div> -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="cols-span-1 flex items-center justify-center">
+                <a href="#" id="remove-item" class="text-red-700 hover:text-red-500" data-index="{{ product.id }}"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </span>
+    </div>
+
+{% endfor %}
+
+
+<div class="flex items-center justify-between">
+    <span class="mx-auto">
+        <span class="sm:text-lg text-sm font-bold" id="total">Total: $</span>
+    </span>
+    <span class="mx-auto">
+        <a href="#" class="py-2 px-4 sm:text-lg text-sm font-semibold rounded-xl bg-white border border-blue-700 text-blue-700 shadow-[3px_3px_0px_0px_rgba(29,78,216)] hover:bg-blue-700 hover:text-white hover:shadow-[3px_3px_0px_0px_rgba(0,0,0)]">Checkout</a>
+    </span>
+</div>
+
+
+
+</div>
+{% endif %}
+
+
+<script>
+
+    let Total = 0;
+
+// Select all quantity and price elements
+    const quantityElements = document.querySelectorAll('#Quantity');
+    const priceElements = document.querySelectorAll('#price');
+
+    // Calculate total in a single loop
+    for (let i = 0; i < quantityElements.length; i++) {
+        const quantity = parseFloat(quantityElements[i].value);
+        const price = parseFloat(priceElements[i].textContent.replace('$', ''));
+        Total += price * quantity;
+    }
+
+    
+
+    // Sent request to the backend via increment and decrement buttons
+    $(document).on('click', '#decrement-button', function(e){
+        const quantityInput = $(this).siblings('#Quantity');
+        const currentValue = Number(quantityInput.val());
+        const newValue = currentValue - 1;
+        quantityInput.val(newValue >= 1 ? newValue : 1);
+
+        e.preventDefault();
+        var item_id = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:update" %}',
+            data: {
+                'item_id': item_id,
+                'quantity':  $(this).siblings('#Quantity').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'action': 'post'
+            },
+            success: function(response){
+                document.getElementById('cart-qty').innerHTML = response['Quantity'];
+                Total -= parseFloat(response['price']);
+                document.getElementById('total').innerHTML = 'Total: $' + Total;
+                console.log(response);
+                // alert('Item added to cart');
+            },
+            error: function(response){
+                console.log(response);
+                alert('Error adding item to cart');
+            }
+        });
+    });
+
+    $(document).on('click', '#increment-button', function(e){
+        const quantityInput = $(this).siblings('#Quantity');
+        const currentValue = Number(quantityInput.val());
+        const newValue = currentValue + 1;
+        quantityInput.val(newValue);
+
+        e.preventDefault();
+        var item_id = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:update" %}',
+            data: {
+                'item_id': item_id,
+                'quantity':  $(this).siblings('#Quantity').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'action': 'post'
+            },
+            success: function(response){
+                document.getElementById('cart-qty').innerHTML = response['Quantity'];
+                Total += parseFloat(response['price']);
+                document.getElementById('total').innerHTML = 'Total: $' + Total;
+                // console.log(response);
+                // alert('Item added to cart');
+            },
+            error: function(response){
+                // console.log(response);
+                // alert('Error adding item to cart');
+            }
+        });
+    });
+
+
+    $(document).on('click', '#remove-item', function(e){
+        e.preventDefault();
+
+        var item_id = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:delete" %}',
+            data: {
+                'item_id': item_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'action': 'post'
+            },
+            success: function(response){
+                // document.getElementById('cart-qty').innerHTML = response['Quantity'];
+                
+                location.reload();
+
+                // alert('Item added to cart');
+            },
+            error: function(response){
+                // console.log(response);
+                alert('Error removing item to cart');
+            }
+        });
+    });
+
+
+    // Sent request to the backend via update button
+
+    // $(document).on('click', '#update-cart', function(e){
+    //     e.preventDefault();
+    //     var item_id = $(this).data('index');
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '{% url "cart:update" %}',
+    //         data: {
+    //             'item_id': item_id,
+    //             'quantity': $('#qty-'+item_id).find('input').val(),
+    //             'csrfmiddlewaretoken': '{{ csrf_token }}',
+    //             'action': 'post'
+    //         },
+    //         success: function(response){
+    //             document.getElementById('cart-qty').innerHTML = response['Quantity'];
+    //             console.log(response);
+    //             // alert('Item added to cart');
+    //         },
+    //         error: function(response){
+    //             console.log(response);
+    //             alert('Error adding item to cart');
+    //         }
+    //     });
+    // });
+
+    document.getElementById('total').innerHTML = 'Total: $' + Total;
+
+
+</script>
+
+{% endblock %}
+

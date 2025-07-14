@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<div class="sm:w-3/4 w-full mx-auto px-6 py-12 bg-gray-100 rounded-xl">
+<h1 class="text-3xl font-semibold text-center mb-6">Contact Us</h1>
+<form action="https://formsubmit.co/6c80894279a1e70ec30769e3151aad49" method="POST">
+    <input type="text" name="_honey" style="display: none;">
+    <input type="hidden" name="_captcha" value="false">
+    <div class="mx-auto">
+
+        <input class="mb-5 w-full py-3 px-3 rounded-lg border border-black shadow-[3px_3px_0px_0px_rgba(0,0,0)]" type="text" name="name" placeholder="Name"/>
+        <input class="mb-5 w-full py-3 px-3 rounded-lg border border-black shadow-[3px_3px_0px_0px_rgba(0,0,0)]" type="text" name="email" placeholder="Email"/>
+        <input class="mb-5 w-full py-3 px-3 rounded-lg border border-black shadow-[3px_3px_0px_0px_rgba(0,0,0)]" type="text" name="subject" placeholder="Subject"/>
+        <textarea class="mb-5 w-full py-3 px-3 rounded-lg border border-black shadow-[3px_3px_0px_0px_rgba(0,0,0)]" name="message" placeholder="Message" rows="6"></textarea>
+        <div class="w-full flex items-center">
+        <button class="mx-auto font-semibold py-4 px-3 rounded-lg border border-black shadow-[5px_5px_0px_0px_rgba(0,0,0)] hover:bg-blue-700 hover:text-white hover:shadow-[5px_5px_0px_0px_rgba(0,0,0)]" type="submit">Send Message</button>
+        </div>
+
+    </div>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+
+<div class="sm:w-3/4 w-full mx-auto my-7 px-3 py-4 space-x-3 bg-gray-100 rounded-xl">
+    <div class="grid sm:grid-cols-5 gap-5 p-4">
+        <div id="checkbox" class="col-start-1 col-span-1 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+          <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Category</h6>
+
+        <!-- Checkbox menu -->
+          <ul class="space-y-2 text-sm mb-2 pb-3 border-b-2 border-gray-300" aria-labelledby="dropdownDefault">
+            {% for category in categories %}
+            <li class="flex items-center">
+                <input id="{{ category }}" type="checkbox" value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+        
+                <label for="{{ category }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {{ category }} ({{category.items.count}})
+                </label>
+            </li>
+            {% endfor %}
+          </ul>
+        <!-- End Checkbox menu -->
+
+
+
+        <!-- Price Range -->
+          <div class="bg-white w-full max-w-md pb-3 border-b-2 border-gray-300 mb-2">
+            <div class="mb-1">
+              <label for="price-range" class="block text-sm p-0 text-gray-900 mb-2">Price Range</label>
+              <input type="range" id="price-range" class="w-full accent-indigo-600" min="0" max="{{ max_price }}" value="50" oninput="updatePrice(this.value)">
+            </div>
+            <div class="flex justify-between text-gray-500 mb-1">
+              <span id="minPrice" class="text-xs">$0</span>
+              <span id="maxPrice" class="text-xs">${{max_price}}</span>
+            </div>
+          </div>
+        <!-- End Price Range -->
+         <button class="text-sm bg-blue-700 text-white rounded-xl py-2 px-3 hover:bg-blue-500">Show Products</button>
+        </div>
+
+
+        <div class="col-start-2 col-span-4">
+            <div class="grid sm:grid-cols-2 gap-3">
+              {% for product in items %}
+              <div classs="">
+                <a href="{% url 'item:detail' product.id %}">
+                  <div>
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="rounded-t-xl w-full">
+                  </div>
+                  <div  class="bg-white sm:p-6 p-2 rounded-b-xl shadow-md">
+                    <h3 class="sm:text-2xl text-md">{{ product.name }}</h3>
+                    <p class="sm:text-md text-sm text-gray-500">Price: ${{ product.price }}</p>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+        </div>
+
+
+        <script>
+          const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          console.log(checkboxes);
+
+          let arr = [];
+
+          // Check if any checkbox is checked on page load
+          // Add event listeners to checkboxes
+          checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+              if (checkbox.checked) {
+                // console.log(checkbox.id);
+                arr.push(checkbox.id);
+                // console.log(arr);
+              } else {
+                // console.log('Unchecked: ' + checkbox.id);
+                arr = arr.filter(item => item !== checkbox.id);
+                // console.log(arr);
+              }
+            });
+          });
+
+          
+
+
+        </script>
+
+        
+
+
+
+
+
+      
+    
+    
+
+
+
+    
+    </div>
+</div>
+
+
+<script>
+    function updatePrice(value) {
+      document.getElementById("minPrice").textContent = "$" + value;
+    }
+</script>
+
+{% endblock %}

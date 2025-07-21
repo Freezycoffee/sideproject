@@ -12,9 +12,9 @@ class LoginForm(AuthenticationForm):
 class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=100, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Email', 'class': 'mb-5 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
-    firstname = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your First Name', 'class': 'sm:w-4/5 w-full mb-5 py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
+    first_name = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your First Name', 'class': 'sm:w-4/5 w-full mb-5 py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
-    lastname = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Last Name', 'class': 'sm:w-4/5 w-full mb-5 py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
+    last_name = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Last Name', 'class': 'sm:w-4/5 w-full mb-5 py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
     username = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Username', 'class': 'mb-5 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
@@ -28,13 +28,14 @@ class SignupForm(UserCreationForm):
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
 
 class updateProfileForm(UserChangeForm):
-    email = forms.EmailField(max_length=100, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Email'}))
+    password = None  # Disable password field in the form
+    email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Input Your Email', 'class': 'mb-3 mt-2 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
-    firstname = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your First Name'}))
+    first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Input Your First Name', 'class': 'mb-3 mt-2 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
-    lastname = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Last Name'}))
+    last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Input Your Last Name', 'class': 'mb-3 mt-2 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
-    username = forms.CharField(max_length=50, help_text='Required', widget=forms.TextInput(attrs={'placeholder': 'Input Your Username'}))
+    username = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Input Your Username', 'class': 'mb-3 mt-2 w-full py-4 px-6 border border-blue-700 shadow-[5px_5px_0px_0px_rgba(29,78,216)] rounded-xl'}))
 
     class Meta:
         model = User

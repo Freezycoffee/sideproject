@@ -2,10 +2,12 @@
 {% block content %}
 <div class="sm:w-1/2 w-full my-6 p-6 mx-auto rounded-xl border border-black shadow-[5px_5px_0px_0px_rgba(0,0,0)]">
 
-    <h1 class="mb-6 text-3xl">Hi, {{user.username}}</h1>
+    <h1 class="mb-4 mt-2 text-3xl">Hi, {{user.username}}</h1>
+    <form method="POST" action="{% url 'core:settings' %}">
+    {% csrf_token %}
     {{ profile_form.as_p }}
-    <button class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Profile</button>
-    
+    <button type="submit" class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Profile</button>
+    </form>
 </div>
 
 {% endblock %}

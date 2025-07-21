@@ -71,7 +71,13 @@ def settings(request):
             'user': user,
             'profile_form': profile_form
         }
+
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Profile updated successfully.')
+        
     return render(request, 'core/settings.html',context=context)
+
 
 
 

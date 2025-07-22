@@ -2,8 +2,22 @@
 {% block content %}
 <div class="sm:w-1/2 w-full my-6 p-6 mx-auto rounded-xl border border-black shadow-[5px_5px_0px_0px_rgba(0,0,0)]">
 
-    <h1 class="mb-6 text-3xl">Hi, {{user.username}}</h1>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Profile</button>
+    <h1 class="mb-4 text-3xl">Hi, {{user.username}}</h1>
+    <table class="table-auto px-3 py-3 mb-4">
+        <tr>
+            <td>First Name</td>
+            <td class="px-5 mx-3">: {{user.first_name}}</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td class="px-5 mx-3">: {{user.last_name}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td class="px-5 mx-3">: {{user.email}}</td>
+        </tr>
+    </table>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><a href="{% url 'core:settings' %}">Edit Profile</a></button>
     
 </div>
 

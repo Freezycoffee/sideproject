@@ -75,6 +75,7 @@ def settings(request):
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, 'Profile updated successfully.')
+            return redirect('core:profile')
         
     return render(request, 'core/settings.html',context=context)
 

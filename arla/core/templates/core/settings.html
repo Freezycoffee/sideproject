@@ -7,6 +7,7 @@
     {% csrf_token %}
     {{ profile_form.as_p }}
     <button type="submit" class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Profile</button>
+    <button type="button" class="mt-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"><a href="{% url 'core:password' %}">Change Password</a></button>
     </form>
 </div>
 

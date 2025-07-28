@@ -15,4 +15,5 @@ urlpatterns = [
     path('browse/', views.browse, name='browse'),
     path('profile/', views.profile, name='profile'),
     path('settings/', views.settings, name='settings'),
+    path('password/', views.password, name='password'),
 ]

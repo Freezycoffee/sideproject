@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 from item.models import Item, Category
-from .forms import SignupForm, updateProfileForm
+from .forms import SignupForm, updateProfileForm, PasswordChangeForm
 
 def index(request):
     items = Item.objects.all()[:6]
@@ -60,7 +60,10 @@ def profile(request):
             'user': user,
             # 'profile_form': profile_form
         }
-    return render(request, 'core/profile.html',context=context)
+        return render(request, 'core/profile.html',context=context)
+    else:
+        messages.error(request, 'You need to be logged in to view your profile.')
+        return redirect('core:login')
 
 
 def settings(request):
@@ -77,7 +80,34 @@ def settings(request):
             messages.success(request, 'Profile updated successfully.')
             return redirect('core:profile')
         
-    return render(request, 'core/settings.html',context=context)
+        return render(request, 'core/settings.html',context=context)
+    else:
+        messages.error(request, 'You need to be logged in to view your profile.')
+        return redirect('core:login')
+    
+
+def password(request):
+    if request.user.is_authenticated:
+        user = request.user
+        password_form = PasswordChangeForm(user=user, data=request.POST)
+        context = {
+            'user': user,
+            'password_form': password_form
+        }
+
+        if request.method == 'POST':
+            if password_form.is_valid():
+                password_form.save()
+                messages.success(request, 'Password updated successfully.')
+                return redirect('core:login')
+            else:
+                for error in list(password_form.errors.values()):
+                    messages.error(request, error)
+
+        return render(request, 'core/password.html', context=context)
+    else:
+        messages.error(request, 'You need to be logged in to change your password.')
+        return redirect('core:login')
 
 
 
